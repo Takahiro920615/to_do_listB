@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import localforage from 'localforage';
 
 type Todo = {
   title: string;
@@ -34,50 +35,7 @@ const Todos: React.FC = () => {
     setText('');
   };
 
-  const handleEdit = (id: number, value: string) => {
-    // setTodosのコールバック関数
-    setTodos((todos) => {
-      const newTodos = todos.map((todo) => {
-        if(todo.id === id) {
-          // スプレッド演算子で新しい値をセットしてイミュータビリティを保たせるもとの値は更新されません。新しく作成するイメージです
-          return {...todo, title: value};
-        }
-        return todo;
-      });
-
-      console.log('=== Original todos ===');
-          todos.map((todo) => {
-            console.log(`id: ${todo.id}, title: ${todo.title}`);
-          });
-
-      return newTodos;
-    });
-  };
-
-  const handleCheck = (id: number, completed_flg: boolean) => {
-    setTodos((todos) => {
-      const newTodos = todos.map((todo) => {
-        if (todo.id === id) {
-          return {...todo, completed_flg};
-        }
-        return todo;
-      });
-      return newTodos;
-    });
-  }
-
-  const handleRemove = (id: number, delete_flg: boolean) => {
-    setTodos((todos) => {
-      const newTodos = todos.map((todo) => {
-        if(todo.id === id) {
-          return { ...todo, delete_flg};
-        }
-        return todo;
-      });
-      return newTodos;
-    });
-  };
-
+ 
   const handleFilterChange = (filter: Filter) => {
     setFilter(filter);
   };
@@ -105,7 +63,47 @@ const Todos: React.FC = () => {
     // !todos.delete_flgはfalse
     setTodos((todos) => todos.filter((todo) => !todo.delete_flg));
   };
-    
+  
+  // const updateTodo = <T extends keyof Todo>(todos: Todo[], id: number, key: T, value: Todo[T]): Todo[] => {
+  //   return todos.map((todo) => {
+  //     if(todo.id===id) {
+  //       return {...todo, [key]: value};
+  //     }
+  //     return todo;
+  //   });
+  // };
+
+const handleTodo = <K extends keyof Todo, V extends Todo[K]>(
+    id: number,
+    key: K,
+    value: V
+) => {
+  setTodos((todos) => {
+    const newTodos = todos.map((todo) => {
+      if(todo.id === id) {
+        return {...todo, [key]:value};
+      }else {
+        return todo;
+      }
+    });
+    return newTodos;
+  });
+};
+
+useEffect(() => {
+  localforage.getItem('todo-20240622').then((values) => {
+    if(values) {
+      setTodos(values as Todo[]);
+    }
+  });
+}, []);
+
+useEffect(()=> {
+  localforage.setItem('todo-20240622', todos);
+}, [todos]);
+
+
+
 
   return (
     <div className = "todo-container">
@@ -124,7 +122,7 @@ const Todos: React.FC = () => {
         ) : (
           filter !== 'completed' && (
             <form 
-        onSubmit={(e) => {
+          onSubmit={(e) => {
           e.preventDefault();
           handleSubmit();
         }}
@@ -132,7 +130,7 @@ const Todos: React.FC = () => {
         <input
           type="text"
           value={text}
-          disabled={isFormDisabled}
+          // disabled={isFormDisabled}
           onChange={(e) => setText(e.target.value)}
           placeholder="タスクを入力してください"
         />
@@ -146,14 +144,15 @@ const Todos: React.FC = () => {
               <input
                 type="checkbox"
                 checked={todo.completed_flg}
-                onChange={() => handleCheck(todo.id, !todo.completed_flg)}
+                onChange={() => handleTodo(todo.id, 'completed_flg', !todo.completed_flg)}
               />
               <input
                 type="text"
+                disabled={todo.completed_flg || todo.delete_flg}
                 value={todo.title}
-                onChange={(e) => handleEdit(todo.id, e.target.value)}
+                onChange={(e) => handleTodo(todo.id, 'title', e.target.value)}
               />
-              <button onClick={() => handleRemove(todo.id, !todo.delete_flg)}>
+              <button onClick={() => handleTodo(todo.id, 'delete_flg', !todo.delete_flg)}>
                 {todo.delete_flg? '復元' : '削除'}
               </button>
             </li>
