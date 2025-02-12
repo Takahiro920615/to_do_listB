@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import localforage from 'localforage';
+import { useNavigate } from 'react-router-dom'; 
 
 type Todo = {
   title: string;
@@ -11,6 +12,7 @@ type Todo = {
 type Filter = 'all'|'completed'|'unchecked'|'delete';
 
 const Todos: React.FC = () => {
+  const navigate = useNavigate();
   const [todos, setTodos] = useState<Todo[]>([]);
   const [text, setText] = useState('');
   const [nextId, setNextId] = useState(1);
@@ -35,7 +37,62 @@ const Todos: React.FC = () => {
     setText('');
   };
 
- 
+  // const handleEdit = (id: number, value: string) => {
+  //   // setTodosのコールバック関数
+  //   setTodos((todos) => {
+  //     const newTodos = todos.map((todo) => {
+  //       if(todo.id === id) {
+  //         // スプレッド演算子で新しい値をセットしてイミュータビリティを保たせるもとの値は更新されません。新しく作成するイメージです
+  //         return {...todo, title: value};
+  //       }
+  //       return todo;
+  //     });
+
+  //     console.log('=== Original todos ===');
+  //         todos.map((todo) => {
+  //           console.log(`id: ${todo.id}, title: ${todo.title}`);
+  //         });
+
+  //     return newTodos;
+  //   });
+  // };
+
+  // const handleEdit = (id: number, value: string) => {
+  //   setTodos((todos) => updateTodo(todos, id, 'title', value));
+  // };
+
+  // const handleCheck = (id: number, completed_flg: boolean) => {
+  //   setTodos((todos) => {
+  //     const newTodos = todos.map((todo) => {
+  //       if (todo.id === id) {
+  //         return {...todo, completed_flg};
+  //       }
+  //       return todo;
+  //     });
+  //     return newTodos;
+  //   });
+  // }
+  // const handleCheck = (id: number, completed_flg: boolean) => {
+  //   setTodos((todos) => updateTodo(todos, id, 'completed_flg', completed_flg));
+  // };
+
+
+  // const handleRemove = (id: number, delete_flg: boolean) => {
+  //   setTodos((todos) => {
+  //     const newTodos = todos.map((todo) => {
+  //       if(todo.id === id) {
+  //         return { ...todo, delete_flg};
+  //       }
+  //       return todo;
+  //     });
+  //     return newTodos;
+  //   });
+  // };
+  // const handleRemove = (id: number, delete_flg: boolean) => {
+  //   setTodos((todos) => updateTodo(todos, id, 'delete_flg', delete_flg));
+  // };
+
+
   const handleFilterChange = (filter: Filter) => {
     setFilter(filter);
   };
@@ -105,8 +162,16 @@ useEffect(()=> {
 
 
 
-  return (
+  return (    
     <div className = "todo-container">
+      <button
+        className="back-button"
+        onClick={() => navigate('/')}
+        title="Topページに戻る"
+      >
+        ← 戻る
+      </button>
+    
       <select defaultValue="all" onChange={(e) => handleFilterChange(e.target.value as Filter)}
         >
         <option value = "all">全てのタスク</option>

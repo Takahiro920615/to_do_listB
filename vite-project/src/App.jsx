@@ -1,16 +1,18 @@
-import React from 'react'
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Top from './components/Top';
-import Todos from './components/todos/index';
+import Todos from './components/todos';
 
-function App() {
+
+
+function App() { 
   return (
-    <BrowserRouter>
+    <Router>
       <Routes>
         <Route path="/" element={<Top />} />
         <Route path="/todos" element={<Todos />} />
       </Routes>
-    </BrowserRouter>
+    </Router>
   );
 }
 
