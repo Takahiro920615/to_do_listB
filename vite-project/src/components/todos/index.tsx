@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import localforage from 'localforage';
 import { useNavigate } from 'react-router-dom'; 
+import DateDisplay from '../date'
 
 
 type Todo = {
@@ -105,6 +106,7 @@ useEffect(()=> {
 
   return (    
     <div className = "todo-container">
+      <DateDisplay />
       <button
         className="back-button"
         onClick={() => navigate('/')}
