@@ -146,26 +146,34 @@ useEffect(()=> {
       </form>
           )
       )} 
-      <ul>
+      
+      <div className = "details">
+        <h1>詳細</h1>
+
+        <ul>
         {getFilteredTodos().map((todo) => (
             <li key={todo.id}>
-              <input
+              {/* <input
                 type="checkbox"
                 checked={todo.completed_flg}
                 onChange={() => handleTodo(todo.id, 'completed_flg', !todo.completed_flg)}
-              />
+              /> */}
               <input
                 type="text"
                 disabled={todo.completed_flg || todo.delete_flg}
                 value={todo.title}
                 onChange={(e) => handleTodo(todo.id, 'title', e.target.value)}
               />
-              <button onClick={() => handleTodo(todo.id, 'delete_flg', !todo.delete_flg)}>
+              <button className = "editbutton">編集</button>
+
+              <button className = "deletebutton" onClick={() => handleTodo(todo.id, 'delete_flg', !todo.delete_flg)}>
                 {todo.delete_flg? '復元' : '削除'}
               </button>
             </li>
         ))}
       </ul> 
+      </div>
+      
     </div>
   )};
 

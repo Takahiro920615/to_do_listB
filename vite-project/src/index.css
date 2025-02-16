@@ -3,7 +3,6 @@ body, html {
   width: 100%;
   margin: 0;
   font-family: 'Arial', sans-serif;
-  background-color: #f0f0f0; /* 微妙なグレーの背景色 */
 }
 
 
@@ -16,7 +15,6 @@ body, html {
 
 
 .todo-container {
-  background-color: #d3d3d3;
   padding: 2em;
   border-radius: 10px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
@@ -96,21 +94,41 @@ li input[type='checkbox'] {
 
 li button {
   padding: 0.3em 0.6em; 
-  background-color: #dc3545;
   color: #fff;
   border: none;
   border-radius: 5px;
   cursor: pointer;
   width: 100px;
+  margin-right: 8px;
+}
+
+.editbutton{
+  background-color: #98d8b5;
+}
+.deletebutton{
+  background-color: #ffb3b3; 
 }
 
 
 li button:hover {
-  background-color: #c82333;
+  box-shadow: 0 0 5px rgba(0,0,0,0.3);
+  transform: translateY(-1px);
 }
 
 
 button[disabled] {
   background-color: #ccc;
   cursor: not-allowed;
+}
+
+p{
+ font-size: 20px;
+ text-style: bold;
+ border-bottom: 2px solid gray;
+}
+
+.details {
+  background-color: orange;
+  padding: 1rem; /* 見やすくするために余白を追加 */
+  border-radius: 4px; /* 角を少し丸くする */
 }
