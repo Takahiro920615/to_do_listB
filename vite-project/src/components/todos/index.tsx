@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import localforage from 'localforage';
 import { useNavigate } from 'react-router-dom'; 
 
+
 type Todo = {
   title: string;
   readonly id: number;
@@ -37,60 +38,7 @@ const Todos: React.FC = () => {
     setText('');
   };
 
-  // const handleEdit = (id: number, value: string) => {
-  //   // setTodosのコールバック関数
-  //   setTodos((todos) => {
-  //     const newTodos = todos.map((todo) => {
-  //       if(todo.id === id) {
-  //         // スプレッド演算子で新しい値をセットしてイミュータビリティを保たせるもとの値は更新されません。新しく作成するイメージです
-  //         return {...todo, title: value};
-  //       }
-  //       return todo;
-  //     });
-
-  //     console.log('=== Original todos ===');
-  //         todos.map((todo) => {
-  //           console.log(`id: ${todo.id}, title: ${todo.title}`);
-  //         });
-
-  //     return newTodos;
-  //   });
-  // };
-
-  // const handleEdit = (id: number, value: string) => {
-  //   setTodos((todos) => updateTodo(todos, id, 'title', value));
-  // };
-
-  // const handleCheck = (id: number, completed_flg: boolean) => {
-  //   setTodos((todos) => {
-  //     const newTodos = todos.map((todo) => {
-  //       if (todo.id === id) {
-  //         return {...todo, completed_flg};
-  //       }
-  //       return todo;
-  //     });
-  //     return newTodos;
-  //   });
-  // }
-  // const handleCheck = (id: number, completed_flg: boolean) => {
-  //   setTodos((todos) => updateTodo(todos, id, 'completed_flg', completed_flg));
-  // };
-
-
-  // const handleRemove = (id: number, delete_flg: boolean) => {
-  //   setTodos((todos) => {
-  //     const newTodos = todos.map((todo) => {
-  //       if(todo.id === id) {
-  //         return { ...todo, delete_flg};
-  //       }
-  //       return todo;
-  //     });
-  //     return newTodos;
-  //   });
-  // };
-  // const handleRemove = (id: number, delete_flg: boolean) => {
-  //   setTodos((todos) => updateTodo(todos, id, 'delete_flg', delete_flg));
-  // };
+  
 
 
   const handleFilterChange = (filter: Filter) => {
@@ -121,14 +69,6 @@ const Todos: React.FC = () => {
     setTodos((todos) => todos.filter((todo) => !todo.delete_flg));
   };
   
-  // const updateTodo = <T extends keyof Todo>(todos: Todo[], id: number, key: T, value: Todo[T]): Todo[] => {
-  //   return todos.map((todo) => {
-  //     if(todo.id===id) {
-  //       return {...todo, [key]: value};
-  //     }
-  //     return todo;
-  //   });
-  // };
 
 const handleTodo = <K extends keyof Todo, V extends Todo[K]>(
     id: number,
@@ -146,6 +86,7 @@ const handleTodo = <K extends keyof Todo, V extends Todo[K]>(
     return newTodos;
   });
 };
+
 
 useEffect(() => {
   localforage.getItem('todo-20240622').then((values) => {
