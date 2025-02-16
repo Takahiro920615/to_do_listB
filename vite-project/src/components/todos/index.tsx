@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import localforage from 'localforage';
 import { useNavigate } from 'react-router-dom'; 
 import DateDisplay from '../date'
+import ProgressSelect from '../progress'
 
 
 type Todo = {
@@ -9,6 +10,7 @@ type Todo = {
   readonly id: number;
   completed_flg: boolean;
   delete_flg: boolean;
+  progress: number;
 };
 
 type Filter = 'all'|'completed'|'unchecked'|'delete';
@@ -30,6 +32,7 @@ const Todos: React.FC = () => {
       id: nextId,
       completed_flg: false,
       delete_flg: false,
+      progress :0
     };
     
     // 現在のTodos配列(prevTodos)を取得して新しいタスクを頭に追加している
@@ -153,6 +156,10 @@ useEffect(()=> {
         <ul>
         {getFilteredTodos().map((todo) => (
             <li key={todo.id}>
+              <ProgressSelect
+                value={todo.progress}
+                onChange={(value) => handleTodo(todo.id, 'progress', value)}
+              />
               {/* <input
                 type="checkbox"
                 checked={todo.completed_flg}
