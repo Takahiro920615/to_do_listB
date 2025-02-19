@@ -168,15 +168,18 @@ useEffect(()=> {
                 value={todo.progress}
                 onChange={(value) => handleTodo(todo.id, 'progress', value)}
               />
+             <div className="date-container">
+                <label>開始日</label>
               <SimpleDatePicker
               selectedDate={todo.startDate}
               onChange={(date) => handleTodo(todo.id, "startDate", date)}
               />
-
+              <label>終了日</label>
               <SimpleDatePicker
               selectedDate={todo.endDate}
               onChange={(date) => handleTodo(todo.id, "endDate", date)}
               />
+              </div>
 
 
               {/* <input
