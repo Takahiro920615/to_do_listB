@@ -13,11 +13,14 @@ type Todo = {
   completed_flg: boolean;
   delete_flg: boolean;
   progress: number;
+  startDate: Date | null;
+  endDate: Date | null;
 };
 
 type Filter = 'all'|'completed'|'unchecked'|'delete';
 
 const Todos: React.FC = () => {
+
   const navigate = useNavigate();
   const [todos, setTodos] = useState<Todo[]>([]);
   const [text, setText] = useState('');
@@ -34,7 +37,9 @@ const Todos: React.FC = () => {
       id: nextId,
       completed_flg: false,
       delete_flg: false,
-      progress :0
+      progress :0,
+      startDate: new Date(),
+      endDate: new Date(),
     };
     
     // 現在のTodos配列(prevTodos)を取得して新しいタスクを頭に追加している
@@ -158,12 +163,22 @@ useEffect(()=> {
         <ul>
         {getFilteredTodos().map((todo) => (
             <li key={todo.id}>
+              
               <ProgressSelect
                 value={todo.progress}
                 onChange={(value) => handleTodo(todo.id, 'progress', value)}
               />
+              <SimpleDatePicker
+              selectedDate={todo.startDate}
+              onChange={(date) => handleTodo(todo.id, "startDate", date)}
+              />
 
-              <SimpleDatePicker/>
+              <SimpleDatePicker
+              selectedDate={todo.endDate}
+              onChange={(date) => handleTodo(todo.id, "endDate", date)}
+              />
+
+
               {/* <input
                 type="checkbox"
                 checked={todo.completed_flg}
