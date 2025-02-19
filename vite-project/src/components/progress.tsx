@@ -12,6 +12,7 @@ import React from 'react';
     <select
       value={value}
       onChange={(e) => onChange(Number(e.target.value))}
+      className="progress-select"
     >
       {progressOptions.map((progress) => (
         <option key={progress} value={progress}>

@@ -2,7 +2,9 @@ import React, { useState, useEffect } from 'react';
 import localforage from 'localforage';
 import { useNavigate } from 'react-router-dom'; 
 import DateDisplay from '../date'
-import ProgressSelect from '../progress'
+import ProgressSelect from '../Progress'
+import Datepicker from '../Datepicker'
+import SimpleDatePicker from '../Datepicker';
 
 
 type Todo = {
@@ -160,6 +162,8 @@ useEffect(()=> {
                 value={todo.progress}
                 onChange={(value) => handleTodo(todo.id, 'progress', value)}
               />
+
+              <SimpleDatePicker/>
               {/* <input
                 type="checkbox"
                 checked={todo.completed_flg}
