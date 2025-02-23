@@ -29,6 +29,7 @@ const Todos: React.FC = () => {
   const [text, setText] = useState('');
   const [nextId, setNextId] = useState(1);
   const [filter, setFilter] = useState<Filter>('all')
+  // 現在開いているアコーディオンのtodo.idを保存するためのstate(保存)初期値はnull(開いていない)
   const [openTodoId, setOpenTodoId] = useState<number | null>(null);
   
   const handleSubmit = () => {
@@ -44,6 +45,7 @@ const Todos: React.FC = () => {
       progress :0,
       startDate: new Date(),
       endDate: new Date(),
+      details: null
     };
     
     // 現在のTodos配列(prevTodos)を取得して新しいタスクを頭に追加している
@@ -102,12 +104,14 @@ const handleTodo = <K extends keyof Todo, V extends Todo[K]>(
   });
 };
 
-// アコーディオンのないよ編集のための関数
+// openTodoIdにtodo.idをセットしてアコーディオンを開いている
 const toggleDetails = (id: number) => {
+  // nullの状態でこの関数が動くと開き、idがセットされている状態で動くと閉じる
   setOpenTodoId(openTodoId === id ? null : id);
 };
 
 const updateDetails = (id: number, newDetails: string) => {
+  // setTodosでtodosの値を更新している。新しいdetailsの内容を一度newDetailsに格納している。
   setTodos((prevTodos) =>
     prevTodos.map((todo) =>
       todo.id === id ? { ...todo, details: newDetails } : todo
