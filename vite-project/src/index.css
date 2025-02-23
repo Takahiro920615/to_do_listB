@@ -26,12 +26,13 @@ body, html {
 
 
 select, input[type='text'], button[type='submit'] {
-  width: 95%;
+  width: 100%;
   margin: 0.5em 0;
-  padding: 0.75em; /* パディングを大きく */
-  font-size: 1.2em; /* フォントサイズを大きく */
+  padding: 1px 6px; /* パディングを大きく */
+  font-size: 14px; /* フォントサイズを大きく */
   border: 1px solid #ccc;
   border-radius: 5px;
+  border: 1px solid #ffc29e;
 }
 
 
@@ -128,9 +129,15 @@ p{
 }
 
 .details {
-  background-color: orange;
+  background-color: #ffc29e;
   padding: 1rem; /* 見やすくするために余白を追加 */
-  border-radius: 4px; /* 角を少し丸くする */
+  /* border-radius: 4px; 角を少し丸くする */
+}
+
+.accordion-container{
+  background-color: #ffc29e;
+  margin-top: 0; /* 上の間隔をなくす */
+  padding: 0; 
 }
 
 .progress-select{
@@ -156,4 +163,15 @@ p{
 
 .date-container label {
   margin-bottom: 3px;
+}
+
+.form-control {
+  width: 100%;  /* または必要な幅 */
+  height: 35px;  /* または必要な高さ */
+  padding: 1px 6px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 14px;
+  margin-bottom:40px;
+  border: 1px solid #ffc29e;
 }

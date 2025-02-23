@@ -5,6 +5,8 @@ import DateDisplay from '../date'
 import ProgressSelect from '../Progress'
 import Datepicker from '../Datepicker'
 import SimpleDatePicker from '../Datepicker';
+import Accordion from "../Accordion";
+
 
 
 type Todo = {
@@ -15,6 +17,7 @@ type Todo = {
   progress: number;
   startDate: Date | null;
   endDate: Date | null;
+  details?: string;
 };
 
 type Filter = 'all'|'completed'|'unchecked'|'delete';
@@ -26,6 +29,7 @@ const Todos: React.FC = () => {
   const [text, setText] = useState('');
   const [nextId, setNextId] = useState(1);
   const [filter, setFilter] = useState<Filter>('all')
+  const [openTodoId, setOpenTodoId] = useState<number | null>(null);
   
   const handleSubmit = () => {
     // 空ののタスクが追加されることを防ぎます
@@ -98,6 +102,20 @@ const handleTodo = <K extends keyof Todo, V extends Todo[K]>(
   });
 };
 
+// アコーディオンのないよ編集のための関数
+const toggleDetails = (id: number) => {
+  setOpenTodoId(openTodoId === id ? null : id);
+};
+
+const updateDetails = (id: number, newDetails: string) => {
+  setTodos((prevTodos) =>
+    prevTodos.map((todo) =>
+      todo.id === id ? { ...todo, details: newDetails } : todo
+    )
+  );
+};
+// ーーーーーーーーーーーーーーーーーーーーーーーー
+
 
 useEffect(() => {
   localforage.getItem('todo-20240622').then((values) => {
@@ -117,53 +135,54 @@ useEffect(()=> {
   return (    
     <div className = "todo-container">
       <DateDisplay />
-      <button
-        className="back-button"
-        onClick={() => navigate('/')}
-        title="Topページに戻る"
-      >
-        ← 戻る
-      </button>
-    
-      <select defaultValue="all" onChange={(e) => handleFilterChange(e.target.value as Filter)}
+        <button
+          className="back-button"
+          onClick={() => navigate('/')}
+          title="Topページに戻る"
         >
-        <option value = "all">全てのタスク</option>
-        <option value="completed">完了したタスク</option>
-        <option value ="unchecked">現在のタスク</option>
-        <option value = "delete">ゴミ箱</option>
-      </select>
-
-      {filter === 'delete' ? (
-        <button onClick= {handleEmpty}>
-          ゴミ箱を空にする
+          ← 戻る
         </button>
-        ) : (
-          filter !== 'completed' && (
-            <form 
-          onSubmit={(e) => {
-          e.preventDefault();
-          handleSubmit();
-        }}
-        >
-        <input
-          type="text"
-          value={text}
-          // disabled={isFormDisabled}
-          onChange={(e) => setText(e.target.value)}
-          placeholder="タスクを入力してください"
-        />
-        <button className="insert-btn" type="submit">追加</button>
+      
+        <select defaultValue="all" onChange={(e) => handleFilterChange(e.target.value as Filter)}
+          className="form-control"
+          >
+          <option value = "all">全てのタスク</option>
+          <option value="completed">完了したタスク</option>
+          <option value ="unchecked">現在のタスク</option>
+          <option value = "delete">ゴミ箱</option>
+        </select>
+
+        {filter === 'delete' ? (
+          <button onClick= {handleEmpty}>
+            ゴミ箱を空にする
+          </button>
+          ) : (
+            filter !== 'completed' && (
+              <form 
+            onSubmit={(e) => {
+            e.preventDefault();
+            handleSubmit();
+          }}
+          >
+
+          <input
+            type="text"
+            value={text}
+            // disabled={isFormDisabled}
+            onChange={(e) => setText(e.target.value)}
+            placeholder="タスクを入力してください"
+            className="form-control"
+          />
+          <button className="insert-btn" type="submit">追加</button>
       </form>
           )
       )} 
       
       <div className = "details">
         <h1>詳細</h1>
-
         <ul>
         {getFilteredTodos().map((todo) => (
             <li key={todo.id}>
-              
               <ProgressSelect
                 value={todo.progress}
                 onChange={(value) => handleTodo(todo.id, 'progress', value)}
@@ -180,8 +199,6 @@ useEffect(()=> {
               onChange={(date) => handleTodo(todo.id, "endDate", date)}
               />
               </div>
-
-
               {/* <input
                 type="checkbox"
                 checked={todo.completed_flg}
@@ -193,17 +210,34 @@ useEffect(()=> {
                 value={todo.title}
                 onChange={(e) => handleTodo(todo.id, 'title', e.target.value)}
               />
-              <button className = "editbutton">編集</button>
-
+              <button className = "editbutton"
+               onClick= {() => toggleDetails(todo.id)}
+               >
+               編集</button>
               <button className = "deletebutton" onClick={() => handleTodo(todo.id, 'delete_flg', !todo.delete_flg)}>
                 {todo.delete_flg? '復元' : '削除'}
               </button>
             </li>
         ))}
       </ul> 
-      </div>
-      
     </div>
-  )};
+    <div className ="accordion-container">
+    {openTodoId !== null && (
+      <div style={{ width: "100%", minHeight: "200px", marginTop: "20px" }}>
+        <Accordion isOpen={true}>
+          <textarea
+            style={{ width: "95%", height: "150px", fontSize: "16px" }}
+            value={todos.find((todo) => todo.id === openTodoId)?.details || ""}
+            onChange={(e) =>
+              updateDetails(openTodoId as number, e.target.value)
+            }
+            placeholder="#進捗状況#\n#内容#\n#背景#\n#改修内容#"
+          />
+        </Accordion>
+      </div>
+    )}
+    </div>
+  </div>
+)};
 
 export default Todos;
