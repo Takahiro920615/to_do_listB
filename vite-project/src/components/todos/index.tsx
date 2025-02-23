@@ -223,7 +223,7 @@ useEffect(()=> {
     </div>
     <div className ="accordion-container">
     {openTodoId !== null && (
-      <div style={{ width: "100%", minHeight: "200px", marginTop: "20px" }}>
+      <div style={{ width: "100%", minHeight: "200px" }}>
         <Accordion isOpen={true}>
           <textarea
             style={{ width: "95%", height: "150px", fontSize: "16px" }}
