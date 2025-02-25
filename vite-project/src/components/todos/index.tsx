@@ -9,6 +9,7 @@ import Accordion from "../Accordion";
 
 
 
+
 type Todo = {
   title: string;
   readonly id: number;
@@ -139,13 +140,21 @@ useEffect(()=> {
   return (    
     <div className = "todo-container">
       <DateDisplay />
-        <button
+
+       <button 
+        className='calendar-btn' 
+        type="submit"
+        onClick={() => navigate('/calendar')}
+        >
+          カレンダーに戻る
+        </button>
+        {/* <button
           className="back-button"
           onClick={() => navigate('/')}
           title="Topページに戻る"
         >
           ← 戻る
-        </button>
+        </button> */}
       
         <select defaultValue="all" onChange={(e) => handleFilterChange(e.target.value as Filter)}
           className="form-control"
